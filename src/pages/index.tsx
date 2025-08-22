@@ -20,6 +20,7 @@ import { ElevenLabsParam, DEFAULT_ELEVEN_LABS_PARAM } from "@/features/constants
 import { buildUrl } from "@/utils/buildUrl";
 import { websocketService } from '../services/websocketService';
 import { MessageMiddleOut } from "@/features/messages/messageMiddleOut";
+import { CopyToClipboard } from "@/components/copy";
 
 const m_plus_2 = M_PLUS_2({
   variable: "--font-m-plus-2",
@@ -339,6 +340,7 @@ export default function Home() {
   return (
     <div className={`${m_plus_2.variable} ${montserrat.variable}`}>
       <Meta />
+      <CopyToClipboard textToCopy="XXXXXXXXXXXXXXX" />
       <VrmViewer />
       <MessageInputContainer
         isChatProcessing={chatProcessing}
