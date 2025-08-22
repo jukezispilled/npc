@@ -71,15 +71,25 @@ export default function Home() {
       setElevenLabsParam(params.elevenLabsParam);
       setChatLog(params.chatLog);
     }
-    if (window.localStorage.getItem("elevenLabsKey")) {
-      const key = window.localStorage.getItem("elevenLabsKey") as string;
-      setElevenLabsKey(key);
+    
+    // Load ElevenLabs key - prioritize localStorage, fallback to env
+    const storedElevenLabsKey = window.localStorage.getItem("elevenLabsKey");
+    const envElevenLabsKey = process.env.NEXT_PUBLIC_ELEVEN_LABS_API_KEY;
+    if (storedElevenLabsKey) {
+      setElevenLabsKey(storedElevenLabsKey);
+    } else if (envElevenLabsKey) {
+      setElevenLabsKey(envElevenLabsKey);
     }
-    // load openrouter key from localStorage
+
+    // Load OpenRouter key - prioritize localStorage, fallback to env
     const savedOpenRouterKey = localStorage.getItem('openRouterKey');
+    const envOpenRouterKey = process.env.NEXT_PUBLIC_OPENROUTER_API_KEY;
     if (savedOpenRouterKey) {
       setOpenRouterKey(savedOpenRouterKey);
+    } else if (envOpenRouterKey) {
+      setOpenRouterKey(envOpenRouterKey);
     }
+
     const savedBackground = localStorage.getItem('backgroundImage');
     if (savedBackground) {
       setBackgroundImage(savedBackground);
@@ -93,11 +103,13 @@ export default function Home() {
         JSON.stringify({ systemPrompt, elevenLabsParam, chatLog })
       )
 
-      // store separately to be backward compatible with local storage data
-      window.localStorage.setItem("elevenLabsKey", elevenLabsKey);
+      // Only store to localStorage if the key was manually entered (not from env)
+      if (elevenLabsKey && elevenLabsKey !== process.env.NEXT_PUBLIC_ELEVEN_LABS_API_KEY) {
+        window.localStorage.setItem("elevenLabsKey", elevenLabsKey);
+      }
     }
     );
-  }, [systemPrompt, elevenLabsParam, chatLog]);
+  }, [systemPrompt, elevenLabsParam, chatLog, elevenLabsKey]);
 
   useEffect(() => {
     if (backgroundImage) {
@@ -184,10 +196,11 @@ export default function Home() {
         ...messageLog,
       ]);
 
+      // Use OpenRouter key from state (which includes env fallback)
       let localOpenRouterKey = openRouterKey;
       if (!localOpenRouterKey) {
-        // fallback to free key for users to try things out
-        localOpenRouterKey = process.env.NEXT_PUBLIC_OPENROUTER_API_KEY!;
+        // Final fallback to env variable if state is empty
+        localOpenRouterKey = process.env.NEXT_PUBLIC_OPENROUTER_API_KEY || '';
       }
 
       const stream = await getChatResponseStream(processedMessages, openAiKey, localOpenRouterKey).catch(
@@ -314,47 +327,23 @@ export default function Home() {
   const handleOpenRouterKeyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newKey = event.target.value;
     setOpenRouterKey(newKey);
-    localStorage.setItem('openRouterKey', newKey);
+    // Only store to localStorage if it's different from env variable
+    if (newKey !== process.env.NEXT_PUBLIC_OPENROUTER_API_KEY) {
+      localStorage.setItem('openRouterKey', newKey);
+    } else {
+      // Remove from localStorage if it matches env variable
+      localStorage.removeItem('openRouterKey');
+    }
   };
 
   return (
     <div className={`${m_plus_2.variable} ${montserrat.variable}`}>
       <Meta />
-      <Introduction
-        openAiKey={openAiKey}
-        onChangeAiKey={setOpenAiKey}
-        elevenLabsKey={elevenLabsKey}
-        onChangeElevenLabsKey={setElevenLabsKey}
-      />
       <VrmViewer />
       <MessageInputContainer
         isChatProcessing={chatProcessing}
         onChatProcessStart={handleSendChat}
       />
-      <Menu
-        openAiKey={openAiKey}
-        elevenLabsKey={elevenLabsKey}
-        openRouterKey={openRouterKey}
-        systemPrompt={systemPrompt}
-        chatLog={chatLog}
-        elevenLabsParam={elevenLabsParam}
-        koeiroParam={koeiroParam}
-        assistantMessage={assistantMessage}
-        onChangeAiKey={setOpenAiKey}
-        onChangeElevenLabsKey={setElevenLabsKey}
-        onChangeSystemPrompt={setSystemPrompt}
-        onChangeChatLog={handleChangeChatLog}
-        onChangeElevenLabsParam={setElevenLabsParam}
-        onChangeKoeiromapParam={setKoeiroParam}
-        handleClickResetChatLog={() => setChatLog([])}
-        handleClickResetSystemPrompt={() => setSystemPrompt(SYSTEM_PROMPT)}
-        backgroundImage={backgroundImage}
-        onChangeBackgroundImage={setBackgroundImage}
-        onTokensUpdate={handleTokensUpdate}
-        onChatMessage={handleSendChat}
-        onChangeOpenRouterKey={handleOpenRouterKeyChange}
-      />
-      <GitHubLink />
     </div>
   );
 }

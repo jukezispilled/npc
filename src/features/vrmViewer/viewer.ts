@@ -92,7 +92,7 @@ export class Viewer {
 
     // camera
     this._camera = new THREE.PerspectiveCamera(20.0, width / height, 0.1, 20.0);
-    this._camera.position.set(0, 1.3, 1.5);
+    this._camera.position.set(0, 1.3, 1.9);
     this._cameraControls?.target.set(0, 1.3, 0);
     this._cameraControls?.update();
     // camera controls
@@ -101,6 +101,10 @@ export class Viewer {
       this._renderer.domElement
     );
     this._cameraControls.screenSpacePanning = true;
+    
+    // Disable zoom functionality
+    this._cameraControls.enableZoom = false;
+    
     this._cameraControls.update();
 
     window.addEventListener("resize", () => {
