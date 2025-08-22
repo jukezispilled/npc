@@ -4,7 +4,7 @@ import Head from "next/head";
 export const Meta = () => {
   const title = "NPC";
   const description = "your npc companion";
-  const iconUrl = "/npc.png"; // Path to your icon in public folder
+  const iconUrl = "/npc1.png"; // Path to your icon in public folder
   
   return (
     <Head>
