@@ -53,7 +53,7 @@ export async function getChatResponseStream(
       try {
 
         const OPENROUTER_API_KEY = openRouterKey;
-        const YOUR_SITE_URL = 'https://chat-vrm-window.vercel.app/';
+        const YOUR_SITE_URL = 'https://npc-murex.vercel.app/';
         const YOUR_SITE_NAME = 'ChatVRM';
 
         let isStreamed = false;
