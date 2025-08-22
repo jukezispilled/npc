@@ -54,12 +54,12 @@ export const MessageInput = ({
   onClickSendButton,
 }: MessageInputProps) => {
   return (
-    <div className="fixed bottom-0 w-full z-20 bg-[#000000] border-t border-[#333333] p-4">
-      <div className="max-w-2xl mx-auto p-4">
-        <div className="flex items-center gap-3 bg-[#000000] rounded-full border border-[#333333]">
+    <div className="fixed bottom-0 w-full z-20 bg-[#000000] border-t border-[#333333] p-8">
+      <div className="max-w-2xl mx-auto p-[6px]">
+        <div className="flex items-center gap-3 bg-[#000000] rounded-full border border-[#333333] p-4">
           <IconButton
             iconName="24/Microphone"
-            className={`${isMicRecording ? 'bg-[#1d9bf0]' : 'bg-transparent hover:bg-[#1a1a1a]'} border-none p-4`}
+            className={`${isMicRecording ? 'bg-[#1d9bf0]' : 'bg-transparent hover:bg-[#1a1a1a]'} border-none p-[6px]`}
             isProcessing={isMicRecording}
             disabled={isChatProcessing}
             onClick={onClickMicButton}
@@ -70,7 +70,7 @@ export const MessageInput = ({
             onChange={onChangeUserMessage}
             onKeyDown={onKeyDownUserMessage}
             disabled={isChatProcessing}
-            className="flex-1 bg-transparent text-[#ffffff] placeholder-[#71767b] text-md outline-none border-none p-2"
+            className="flex-1 m-[2px] bg-transparent text-[#ffffff] placeholder-[#71767b] text-md outline-none border-none p-2"
             value={userMessage}
           />
           <IconButton
