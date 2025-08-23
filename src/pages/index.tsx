@@ -39,6 +39,23 @@ type LLMCallbackResult = {
   error?: string;
 };
 
+// Powered By Logo Component
+const PoweredByLogo = () => {
+  return (
+    <div className="fixed top-[6px] left-[6px] z-50 flex items-center gap-2 px-3 py-2">
+      <span className="text-[#b2b2b2] text-[10px] font-medium m-[2px]">powered by</span>
+        <a href="https://x.com/xai" className="hover:underline">
+          <img 
+            src="/xai.png"
+            alt="xAI" 
+            style={{ width: '12px', height: '12px' }}
+            className="object-contain"
+          />
+        </a>
+    </div>
+  );
+};
+
 export default function Home() {
   const { viewer } = useContext(ViewerContext);
 
@@ -340,6 +357,7 @@ export default function Home() {
   return (
     <div className={`${m_plus_2.variable} ${montserrat.variable}`}>
       <Meta />
+      <PoweredByLogo />
       <CopyToClipboard textToCopy="XXXXXXXXXXXXXXX" />
       <VrmViewer />
       <MessageInputContainer
