@@ -358,7 +358,7 @@ export default function Home() {
     <div className={`${m_plus_2.variable} ${montserrat.variable}`}>
       <Meta />
       <PoweredByLogo />
-      <CopyToClipboard textToCopy="XXXXXXXXXXXXXXX" />
+      <CopyToClipboard textToCopy="BCwxAt5fHnLfeDEzRFFkHe3bFyiB7uNGkVGpB6xbpump" />
       <VrmViewer />
       <MessageInputContainer
         isChatProcessing={chatProcessing}
